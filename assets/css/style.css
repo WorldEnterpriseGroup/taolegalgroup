@@ -3689,7 +3689,7 @@ ul.comments-list ul.comment-children ul .comment-body .comment {
     #BOXED LAYOUT
 \*------------------------------------*/
 .body-boxed {
-  background: url(../images/background/pattern.png);
+  background: url(../images/background/pattern.webp);
 }
 .body-boxed .header-fixed .affix {
   box-shadow: none;
@@ -3724,4 +3724,17 @@ ul.comments-list ul.comment-children ul .comment-body .comment {
   padding: 90px;
 }
 
+/* Performance: lazy images carry width/height so their box is reserved; keep them responsive exactly as before.
+   :where() has no specificity, so any existing rule that sets a height still wins. */
+:where(img[loading="lazy"][width][height]) {
+  height: auto;
+}
+/* Performance: functions.js turns each .bg-section > img into a background image on its parent and then removes
+   the <img>. Take that div out of the layout from the start (the img is still fetched) so nothing jumps when the
+   script runs. */
+@media (scripting: enabled) {
+  .bg-section:has(> img) {
+    display: none;
+  }
+}
 /*# sourceMappingURL=style.css.map */
